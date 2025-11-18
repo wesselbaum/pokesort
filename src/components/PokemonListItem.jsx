@@ -1,4 +1,6 @@
-export function PokemonListItem({ pokemon, onClick }) {
+import { memo } from 'react';
+
+export const PokemonListItem = memo(function PokemonListItem({ pokemon, onClick }) {
   return (
     <div className="pokemon-item" onClick={() => onClick(pokemon)}>
       <img
@@ -14,4 +16,4 @@ export function PokemonListItem({ pokemon, onClick }) {
       </div>
     </div>
   );
-}
+});

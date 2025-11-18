@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback } from 'react';
 import { SearchBar } from './components/SearchBar';
 import { PokemonList } from './components/PokemonList';
 import { RecentSearches } from './components/RecentSearches';
@@ -10,16 +10,16 @@ function App() {
   const { filteredPokemon, searchQuery, setSearchQuery } = usePokemon();
   const [recentPokemon, setRecentPokemon] = useLocalStorage('recentPokemon', []);
 
-  const handlePokemonClick = (pokemon) => {
+  const handlePokemonClick = useCallback((pokemon) => {
     setRecentPokemon((prev) => {
       const filtered = prev.filter((p) => p.id !== pokemon.id);
       return [pokemon, ...filtered].slice(0, 10);
     });
-  };
+  }, [setRecentPokemon]);
 
-  const handleClearRecent = () => {
+  const handleClearRecent = useCallback(() => {
     setRecentPokemon([]);
-  };
+  }, [setRecentPokemon]);
 
   return (
     <div className="app">

@@ -1,6 +1,7 @@
+import { memo } from 'react';
 import { PokemonListItem } from './PokemonListItem';
 
-export function PokemonList({ pokemon, onPokemonClick }) {
+export const PokemonList = memo(function PokemonList({ pokemon, onPokemonClick }) {
   if (pokemon.length === 0) {
     return (
       <div className="empty-state">
@@ -20,4 +21,4 @@ export function PokemonList({ pokemon, onPokemonClick }) {
       ))}
     </div>
   );
-}
+});

@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { SearchBar } from './components/SearchBar';
 import { PokemonList } from './components/PokemonList';
 import { RecentSearches } from './components/RecentSearches';
@@ -9,6 +9,7 @@ import './App.css';
 function App() {
   const { filteredPokemon, searchQuery, setSearchQuery } = usePokemon();
   const [recentPokemon, setRecentPokemon] = useLocalStorage('recentPokemon', []);
+  const [language, setLanguage] = useState('de');
 
   const handlePokemonClick = useCallback((pokemon) => {
     setRecentPokemon((prev) => {
@@ -21,22 +22,38 @@ function App() {
     setRecentPokemon([]);
   }, [setRecentPokemon]);
 
+  const toggleLanguage = useCallback(() => {
+    setLanguage(prev => prev === 'de' ? 'en' : 'de');
+  }, []);
+
   return (
     <div className="app">
       <header className="app-header">
         <h1>PokéSort</h1>
+        <button
+          className="language-toggle"
+          onClick={toggleLanguage}
+          aria-label="Toggle language"
+        >
+          {language === 'de' ? 'DE' : 'EN'}
+        </button>
       </header>
 
       <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
 
       <main className="app-main">
-        <PokemonList pokemon={filteredPokemon} onPokemonClick={handlePokemonClick} />
+        <PokemonList
+          pokemon={filteredPokemon}
+          onPokemonClick={handlePokemonClick}
+          language={language}
+        />
       </main>
 
       <RecentSearches
         recentPokemon={recentPokemon}
         onPokemonClick={handlePokemonClick}
         onClear={handleClearRecent}
+        language={language}
       />
     </div>
   );

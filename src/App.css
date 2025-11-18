@@ -10,11 +10,35 @@
   color: white;
   padding: 1rem 2rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .app-header h1 {
   font-size: 1.8rem;
   font-weight: 600;
+}
+
+.language-toggle {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid white;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  min-width: 50px;
+}
+
+.language-toggle:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.language-toggle:active {
+  transform: scale(0.95);
 }
 
 .search-bar {
@@ -100,15 +124,10 @@
   color: #333;
 }
 
-.pokemon-name-de {
+.pokemon-name {
   font-size: 1rem;
   color: #666;
   margin-top: 0.25rem;
-}
-
-.pokemon-name-en {
-  font-size: 0.9rem;
-  color: #999;
 }
 
 .empty-state {

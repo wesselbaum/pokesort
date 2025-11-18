@@ -1,6 +1,8 @@
 import { memo } from 'react';
 
-export const PokemonListItem = memo(function PokemonListItem({ pokemon, onClick }) {
+export const PokemonListItem = memo(function PokemonListItem({ pokemon, onClick, language }) {
+  const displayName = language === 'de' ? pokemon.nameDe : pokemon.nameEn;
+
   return (
     <div className="pokemon-item" onClick={() => onClick(pokemon)}>
       <img
@@ -11,8 +13,7 @@ export const PokemonListItem = memo(function PokemonListItem({ pokemon, onClick 
       />
       <div className="pokemon-info">
         <div className="pokemon-number">#{pokemon.number}</div>
-        <div className="pokemon-name-de">{pokemon.nameDe}</div>
-        <div className="pokemon-name-en">{pokemon.nameEn}</div>
+        <div className="pokemon-name">{displayName}</div>
       </div>
     </div>
   );

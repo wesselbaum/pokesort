@@ -39,7 +39,12 @@ function App() {
         </button>
       </header>
 
-      <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+      <SearchBar
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        filteredPokemon={filteredPokemon}
+        onPokemonSelect={handlePokemonClick}
+      />
 
       <main className="app-main">
         <PokemonList

@@ -34,6 +34,54 @@ npm run fetch-data
 
 This will fetch all Pokemon data from PokeAPI and update the local JSON file.
 
+#### Fetching Specific Pokemon
+
+The fetch script includes several advanced features to handle API errors and fetch specific Pokemon:
+
+**Fetch all Pokemon (default):**
+```bash
+npm run fetch-data
+# or
+node scripts/fetchPokemonData.js
+```
+
+**Fetch specific Pokemon by number:**
+```bash
+node scripts/fetchPokemonData.js 25 144 150
+```
+
+**Fetch a range of Pokemon:**
+```bash
+node scripts/fetchPokemonData.js 1-151
+```
+
+**Combine ranges and specific numbers:**
+```bash
+node scripts/fetchPokemonData.js 1-10 25 50-55 100
+```
+
+#### Automatic Retry & Error Recovery
+
+The script includes intelligent error handling:
+
+- **Automatic Retries**: If the API returns a 500 error, the script automatically retries up to 5 times with exponential backoff (1s, 2s, 4s, 8s, 16s)
+- **Data Preservation**: Existing Pokemon data is automatically loaded and merged with new fetches
+- **Error Summary**: After completion, the script shows which Pokemon failed and provides the exact command to retry them
+
+Example error recovery workflow:
+```bash
+# First run encounters errors
+npm run fetch-data
+
+# Output shows:
+# ⚠️  Failed Pokemon IDs: 25, 144, 150
+# 💡 To retry failed Pokemon, run:
+#   node scripts/fetchPokemonData.js 25 144 150
+
+# Retry just the failed Pokemon
+node scripts/fetchPokemonData.js 25 144 150
+```
+
 ### Development
 
 ```bash

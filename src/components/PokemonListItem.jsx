@@ -1,10 +1,14 @@
 import { memo } from 'react';
 
-export const PokemonListItem = memo(function PokemonListItem({ pokemon, onClick, language }) {
+export const PokemonListItem = memo(function PokemonListItem({ pokemon, onClick, language, isVisible }) {
   const displayName = language === 'de' ? pokemon.nameDe : pokemon.nameEn;
 
   return (
-    <div className="pokemon-item" onClick={() => onClick(pokemon)}>
+    <div
+      className="pokemon-item"
+      onClick={() => onClick(pokemon)}
+      style={{ display: isVisible ? 'flex' : 'none' }}
+    >
       <img
         src={pokemon.sprite}
         alt={pokemon.nameEn}

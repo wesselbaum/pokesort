@@ -7,7 +7,7 @@ import { useLocalStorage } from './hooks/useLocalStorage';
 import './App.css';
 
 function App() {
-  const { filteredPokemon, searchQuery, setSearchQuery } = usePokemon();
+  const { allPokemon, filteredPokemon, searchQuery, setSearchQuery } = usePokemon();
   const [recentPokemon, setRecentPokemon] = useLocalStorage('recentPokemon', []);
   const [language, setLanguage] = useState('de');
 
@@ -48,7 +48,8 @@ function App() {
 
       <main className="app-main">
         <PokemonList
-          pokemon={filteredPokemon}
+          allPokemon={allPokemon}
+          filteredPokemon={filteredPokemon}
           onPokemonClick={handlePokemonClick}
           language={language}
         />

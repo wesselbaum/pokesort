@@ -9,22 +9,110 @@ const __dirname = path.dirname(__filename);
 const TOTAL_POKEMON = 1025;
 const DELAY_MS = 100;
 const BATCH_SIZE = 20;
+const MAX_RETRIES = 5;
+const INITIAL_RETRY_DELAY = 1000; // 1 second
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-async function fetchPokemonData() {
-  console.log(`Starting to fetch data for ${TOTAL_POKEMON} Pokemon...`);
-  console.log('This may take 10-20 minutes. Please be patient.\n');
-
-  const allPokemon = [];
-
-  for (let i = 1; i <= TOTAL_POKEMON; i++) {
+// Retry function with exponential backoff
+async function fetchWithRetry(url, retries = MAX_RETRIES) {
+  for (let attempt = 0; attempt < retries; attempt++) {
     try {
-      process.stdout.write(`\rFetching Pokemon ${i}/${TOTAL_POKEMON} (${Math.round((i / TOTAL_POKEMON) * 100)}%)`);
+      const response = await axios.get(url);
+      return response;
+    } catch (error) {
+      const isLastAttempt = attempt === retries - 1;
+      const isServerError = error.response?.status >= 500;
+      const isRateLimited = error.response?.status === 429;
+
+      if (isLastAttempt || (!isServerError && !isRateLimited)) {
+        throw error;
+      }
+
+      // Exponential backoff: 1s, 2s, 4s, 8s, 16s
+      const retryDelay = INITIAL_RETRY_DELAY * Math.pow(2, attempt);
+      console.log(`\n⚠️  ${error.response?.status || 'Network'} error for ${url}. Retrying in ${retryDelay/1000}s... (Attempt ${attempt + 1}/${retries})`);
+      await delay(retryDelay);
+    }
+  }
+}
+
+// Parse command line arguments for specific Pokemon numbers
+function parseArgs() {
+  const args = process.argv.slice(2);
+
+  if (args.length === 0) {
+    return { mode: 'all' };
+  }
+
+  // Support formats: node script.js 25 26 27 or node script.js 25-30
+  const numbers = new Set();
+
+  for (const arg of args) {
+    if (arg.includes('-')) {
+      const [start, end] = arg.split('-').map(Number);
+      for (let i = start; i <= end; i++) {
+        numbers.add(i);
+      }
+    } else {
+      numbers.add(Number(arg));
+    }
+  }
+
+  return { mode: 'specific', numbers: Array.from(numbers).sort((a, b) => a - b) };
+}
+
+// Load existing Pokemon data if available
+function loadExistingData(dataPath) {
+  if (fs.existsSync(dataPath)) {
+    try {
+      const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+      console.log(`✓ Loaded ${data.length} existing Pokemon from ${dataPath}\n`);
+      return data;
+    } catch (error) {
+      console.log(`⚠️  Could not load existing data: ${error.message}\n`);
+      return [];
+    }
+  }
+  return [];
+}
+
+async function fetchPokemonData() {
+  const config = parseArgs();
+  const dataDir = path.join(__dirname, '..', 'src', 'data');
+  const outputPath = path.join(dataDir, 'pokemon.json');
+
+  // Load existing data
+  const existingPokemon = loadExistingData(outputPath);
+  const pokemonMap = new Map(existingPokemon.map(p => [p.id, p]));
+
+  let pokemonToFetch;
+
+  if (config.mode === 'all') {
+    console.log(`Starting to fetch data for ${TOTAL_POKEMON} Pokemon...`);
+    console.log('This may take 10-20 minutes. Please be patient.\n');
+    pokemonToFetch = Array.from({ length: TOTAL_POKEMON }, (_, i) => i + 1);
+  } else {
+    console.log(`Fetching specific Pokemon: ${config.numbers.join(', ')}\n`);
+    pokemonToFetch = config.numbers;
+  }
+
+  let successCount = 0;
+  let errorCount = 0;
+  const errors = [];
+
+  for (let i = 0; i < pokemonToFetch.length; i++) {
+    const pokemonId = pokemonToFetch[i];
+    try {
+      const progress = config.mode === 'all'
+        ? `${i + 1}/${pokemonToFetch.length} (${Math.round(((i + 1) / pokemonToFetch.length) * 100)}%)`
+        : `${i + 1}/${pokemonToFetch.length}`;
+
+      process.stdout.write(`\rFetching Pokemon #${pokemonId} [${progress}]`);
 
       const [pokemonResponse, speciesResponse] = await Promise.all([
-        axios.get(`https://pokeapi.co/api/v2/pokemon/${i}`),
-        axios.get(`https://pokeapi.co/api/v2/pokemon-species/${i}`)
+        fetchWithRetry(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`),
+        fetchWithRetry(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`)
       ]);
 
       const pokemonData = pokemonResponse.data;
@@ -46,33 +134,50 @@ async function fetchPokemonData() {
         sprite: sprite
       };
 
-      allPokemon.push(pokemon);
+      pokemonMap.set(pokemon.id, pokemon);
+      successCount++;
 
       // Respect rate limiting
-      if (i % BATCH_SIZE === 0) {
+      if ((i + 1) % BATCH_SIZE === 0) {
         await delay(DELAY_MS * 5); // Longer delay after batch
       } else {
         await delay(DELAY_MS);
       }
 
     } catch (error) {
-      console.error(`\nError fetching Pokemon #${i}:`, error.message);
+      errorCount++;
+      errors.push({ id: pokemonId, error: error.message });
+      console.error(`\n❌ Error fetching Pokemon #${pokemonId}:`, error.message);
       // Continue with next Pokemon
     }
   }
 
   console.log('\n\nFetch complete! Saving data...');
 
+  // Convert map back to sorted array
+  const allPokemon = Array.from(pokemonMap.values()).sort((a, b) => a.id - b.id);
+
   // Save to JSON file
-  const dataDir = path.join(__dirname, '..', 'src', 'data');
   if (!fs.existsSync(dataDir)) {
     fs.mkdirSync(dataDir, { recursive: true });
   }
 
-  const outputPath = path.join(dataDir, 'pokemon.json');
   fs.writeFileSync(outputPath, JSON.stringify(allPokemon, null, 2));
 
-  console.log(`\nSuccessfully saved ${allPokemon.length} Pokemon to ${outputPath}`);
+  console.log(`\n${'='.repeat(60)}`);
+  console.log(`✓ Successfully saved ${allPokemon.length} Pokemon to ${outputPath}`);
+  console.log(`  • Fetched: ${successCount}`);
+  console.log(`  • Errors: ${errorCount}`);
+
+  if (errors.length > 0) {
+    console.log(`\n⚠️  Failed Pokemon IDs:`);
+    const failedIds = errors.map(e => e.id).join(', ');
+    console.log(`  ${failedIds}`);
+    console.log(`\n💡 To retry failed Pokemon, run:`);
+    console.log(`  node scripts/fetchPokemonData.js ${failedIds}`);
+  }
+
+  console.log(`${'='.repeat(60)}`);
   console.log('You can now run "npm run dev" to start the application.');
 }
 

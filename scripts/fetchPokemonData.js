@@ -11,6 +11,7 @@ const DELAY_MS = 100;
 const BATCH_SIZE = 20;
 const MAX_RETRIES = 5;
 const INITIAL_RETRY_DELAY = 1000; // 1 second
+const POKEMON_CSV_URL = 'https://raw.githubusercontent.com/PokeAPI/pokeapi/refs/heads/master/data/v2/csv/pokemon.csv';
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -34,6 +35,57 @@ async function fetchWithRetry(url, retries = MAX_RETRIES) {
       console.log(`\n⚠️  ${error.response?.status || 'Network'} error for ${url}. Retrying in ${retryDelay/1000}s... (Attempt ${attempt + 1}/${retries})`);
       await delay(retryDelay);
     }
+  }
+}
+
+// Fetch and parse the Pokemon CSV to get ID to name mappings
+async function fetchPokemonCSV() {
+  console.log('Fetching Pokemon CSV from GitHub...');
+  try {
+    const response = await fetchWithRetry(POKEMON_CSV_URL);
+    const csvText = response.data;
+
+    // Parse CSV (simple parser for this specific format)
+    const lines = csvText.trim().split('\n');
+    const headers = lines[0].split(',');
+
+    // Find the column indexes we need
+    const idIndex = headers.indexOf('id');
+    const identifierIndex = headers.indexOf('identifier');
+
+    const pokemonMap = new Map();
+
+    for (let i = 1; i < lines.length; i++) {
+      const values = lines[i].split(',');
+      const id = parseInt(values[idIndex]);
+      const name = values[identifierIndex];
+
+      // Extract base form name (everything before the first hyphen for forms)
+      // For Pokemon with forms like "tornadus-incarnate" or "dudunsparce-two-segment"
+      // we want just "tornadus" or "dudunsparce"
+      const existingName = pokemonMap.get(id);
+
+      if (!existingName) {
+        // First entry for this ID - extract base name if it's a form
+        const baseName = name.includes('-') ? name.split('-')[0] : name;
+        pokemonMap.set(id, baseName);
+      } else {
+        // Already have an entry for this ID, prefer the shorter/base form
+        const baseName = name.includes('-') ? name.split('-')[0] : name;
+
+        // If the new base name is shorter (more likely to be the true base form)
+        // or if existing has hyphen but current doesn't, replace it
+        if (baseName.length < existingName.length || (!name.includes('-') && existingName.includes('-'))) {
+          pokemonMap.set(id, baseName);
+        }
+      }
+    }
+
+    console.log(`✓ Loaded ${pokemonMap.size} Pokemon from CSV\n`);
+    return pokemonMap;
+  } catch (error) {
+    console.error('❌ Failed to fetch Pokemon CSV:', error.message);
+    throw new Error('Cannot proceed without Pokemon CSV data');
   }
 }
 
@@ -82,6 +134,9 @@ async function fetchPokemonData() {
   const dataDir = path.join(__dirname, '..', 'src', 'data');
   const outputPath = path.join(dataDir, 'pokemon.json');
 
+  // Fetch Pokemon CSV to get ID to name mappings
+  const pokemonCSVMap = await fetchPokemonCSV();
+
   // Load existing data
   const existingPokemon = loadExistingData(outputPath);
   const pokemonMap = new Map(existingPokemon.map(p => [p.id, p]));
@@ -103,12 +158,21 @@ async function fetchPokemonData() {
 
   for (let i = 0; i < pokemonToFetch.length; i++) {
     const pokemonId = pokemonToFetch[i];
+    const pokemonName = pokemonCSVMap.get(pokemonId);
+
+    if (!pokemonName) {
+      console.error(`\n❌ No name found for Pokemon ID #${pokemonId} in CSV`);
+      errorCount++;
+      errors.push({ id: pokemonId, error: 'Name not found in CSV' });
+      continue;
+    }
+
     try {
       const progress = config.mode === 'all'
         ? `${i + 1}/${pokemonToFetch.length} (${Math.round(((i + 1) / pokemonToFetch.length) * 100)}%)`
         : `${i + 1}/${pokemonToFetch.length}`;
 
-      process.stdout.write(`\rFetching Pokemon #${pokemonId} [${progress}]`);
+      process.stdout.write(`\rFetching Pokemon #${pokemonId} (${pokemonName}) [${progress}]`);
 
       const [pokemonResponse, speciesResponse] = await Promise.all([
         fetchWithRetry(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`),

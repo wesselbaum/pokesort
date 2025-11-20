@@ -462,6 +462,13 @@
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/66.png"
   },
   {
+    "id": 67,
+    "number": "067",
+    "nameEn": "Machoke",
+    "nameDe": "Maschock",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/67.png"
+  },
+  {
     "id": 68,
     "number": "068",
     "nameEn": "Machamp",
@@ -1071,6 +1078,13 @@
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/154.png"
   },
   {
+    "id": 155,
+    "number": "155",
+    "nameEn": "Cyndaquil",
+    "nameDe": "Feurigel",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/155.png"
+  },
+  {
     "id": 156,
     "number": "156",
     "nameEn": "Quilava",
@@ -1323,6 +1337,13 @@
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/191.png"
   },
   {
+    "id": 192,
+    "number": "192",
+    "nameEn": "Sunflora",
+    "nameDe": "Sonnflora",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/192.png"
+  },
+  {
     "id": 193,
     "number": "193",
     "nameEn": "Yanma",
@@ -1512,6 +1533,13 @@
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/219.png"
   },
   {
+    "id": 220,
+    "number": "220",
+    "nameEn": "Swinub",
+    "nameDe": "Quiekel",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/220.png"
+  },
+  {
     "id": 221,
     "number": "221",
     "nameEn": "Piloswine",
@@ -1594,6 +1622,13 @@
     "nameEn": "Donphan",
     "nameDe": "Donphan",
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/232.png"
+  },
+  {
+    "id": 233,
+    "number": "233",
+    "nameEn": "Porygon2",
+    "nameDe": "Porygon2",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/233.png"
   },
   {
     "id": 234,
@@ -1750,11 +1785,25 @@
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/255.png"
   },
   {
+    "id": 256,
+    "number": "256",
+    "nameEn": "Combusken",
+    "nameDe": "Jungglut",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/256.png"
+  },
+  {
     "id": 257,
     "number": "257",
     "nameEn": "Blaziken",
     "nameDe": "Lohgock",
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png"
+  },
+  {
+    "id": 258,
+    "number": "258",
+    "nameEn": "Mudkip",
+    "nameDe": "Hydropi",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/258.png"
   },
   {
     "id": 259,
@@ -1783,6 +1832,13 @@
     "nameEn": "Mightyena",
     "nameDe": "Magnayen",
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/262.png"
+  },
+  {
+    "id": 263,
+    "number": "263",
+    "nameEn": "Zigzagoon",
+    "nameDe": "Zigzachs",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/263.png"
   },
   {
     "id": 264,
@@ -2203,6 +2259,13 @@
     "nameEn": "Camerupt",
     "nameDe": "Camerupt",
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/323.png"
+  },
+  {
+    "id": 324,
+    "number": "324",
+    "nameEn": "Torkoal",
+    "nameDe": "Qurtel",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/324.png"
   },
   {
     "id": 325,
@@ -3276,6 +3339,13 @@
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/477.png"
   },
   {
+    "id": 478,
+    "number": "478",
+    "nameEn": "Froslass",
+    "nameDe": "Frosdedje",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/478.png"
+  },
+  {
     "id": 479,
     "number": "479",
     "nameEn": "Rotom",
@@ -3605,6 +3675,13 @@
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/525.png"
   },
   {
+    "id": 526,
+    "number": "526",
+    "nameEn": "Gigalith",
+    "nameDe": "Brockoloss",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/526.png"
+  },
+  {
     "id": 527,
     "number": "527",
     "nameEn": "Woobat",
@@ -3645,6 +3722,13 @@
     "nameEn": "Timburr",
     "nameDe": "Praktibalk",
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/532.png"
+  },
+  {
+    "id": 533,
+    "number": "533",
+    "nameEn": "Gurdurr",
+    "nameDe": "Strepoli",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/533.png"
   },
   {
     "id": 534,
@@ -3773,6 +3857,13 @@
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/551.png"
   },
   {
+    "id": 552,
+    "number": "552",
+    "nameEn": "Krokorok",
+    "nameDe": "Rokkaiman",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/552.png"
+  },
+  {
     "id": 553,
     "number": "553",
     "nameEn": "Krookodile",
@@ -3834,6 +3925,20 @@
     "nameEn": "Sigilyph",
     "nameDe": "Symvolara",
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/561.png"
+  },
+  {
+    "id": 562,
+    "number": "562",
+    "nameEn": "Yamask",
+    "nameDe": "Makabaja",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/562.png"
+  },
+  {
+    "id": 563,
+    "number": "563",
+    "nameEn": "Cofagrigus",
+    "nameDe": "Echnatoll",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/563.png"
   },
   {
     "id": 564,

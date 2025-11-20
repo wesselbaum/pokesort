@@ -28,22 +28,13 @@ function App() {
 
   return (
     <div className="app">
-      <header className="app-header">
-        <h1>PokéSort</h1>
-        <button
-          className="language-toggle"
-          onClick={toggleLanguage}
-          aria-label="Toggle language"
-        >
-          {language === 'de' ? 'DE' : 'EN'}
-        </button>
-      </header>
-
       <SearchBar
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         bestMatch={bestMatch}
         onPokemonSelect={handlePokemonClick}
+        language={language}
+        onToggleLanguage={toggleLanguage}
       />
 
       <main className="app-main">

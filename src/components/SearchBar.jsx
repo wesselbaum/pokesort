@@ -1,4 +1,8 @@
-export function SearchBar({ searchQuery, onSearchChange, bestMatch, onPokemonSelect }) {
+import { useRef } from 'react';
+
+export function SearchBar({ searchQuery, onSearchChange, bestMatch, onPokemonSelect, language, onToggleLanguage }) {
+  const inputRef = useRef(null);
+
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && bestMatch) {
       onPokemonSelect(bestMatch);
@@ -8,9 +12,15 @@ export function SearchBar({ searchQuery, onSearchChange, bestMatch, onPokemonSel
     }
   };
 
+  const handleClear = () => {
+    onSearchChange('');
+    inputRef.current?.focus();
+  };
+
   return (
     <div className="search-bar">
       <input
+        ref={inputRef}
         type="text"
         placeholder="Search by name or number..."
         value={searchQuery}
@@ -24,13 +34,20 @@ export function SearchBar({ searchQuery, onSearchChange, bestMatch, onPokemonSel
       />
       {searchQuery && (
         <button
-          onClick={() => onSearchChange('')}
+          onClick={handleClear}
           className="clear-button"
           aria-label="Clear search"
         >
           ×
         </button>
       )}
+      <button
+        className="language-toggle"
+        onClick={onToggleLanguage}
+        aria-label="Toggle language"
+      >
+        {language === 'de' ? 'DE' : 'EN'}
+      </button>
     </div>
   );
 }

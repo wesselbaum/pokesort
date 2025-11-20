@@ -2,6 +2,8 @@
 
 A React-based web application to browse and search Pokemon with German and English names.
 
+**Live Demo:** [https://wesselbaum.github.io/pokesort/](https://wesselbaum.github.io/pokesort/)
+
 ## Features
 
 - Browse all 1025 Pokemon (Generations 1-9)
@@ -103,6 +105,22 @@ The production-ready files will be in the `dist` folder.
 ```bash
 npm run preview
 ```
+
+## Deployment
+
+The application is automatically deployed to GitHub Pages when changes are pushed to the `main` branch.
+
+### Setup GitHub Pages
+
+To enable GitHub Pages for your fork:
+
+1. Go to your repository Settings
+2. Navigate to Pages (under Code and automation)
+3. Under "Build and deployment":
+   - Source: Select "GitHub Actions"
+4. Push to main branch - the deployment will start automatically
+
+The site will be available at: `https://[your-username].github.io/pokesort/`
 
 ## Project Structure
 

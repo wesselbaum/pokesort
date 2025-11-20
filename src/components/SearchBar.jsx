@@ -17,6 +17,10 @@ export function SearchBar({ searchQuery, onSearchChange, filteredPokemon, onPoke
         onChange={(e) => onSearchChange(e.target.value)}
         onKeyDown={handleKeyDown}
         className="search-input"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
       />
       {searchQuery && (
         <button

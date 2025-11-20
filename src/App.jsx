@@ -7,7 +7,7 @@ import { useLocalStorage } from './hooks/useLocalStorage';
 import './App.css';
 
 function App() {
-  const { allPokemon, filteredPokemon, searchQuery, setSearchQuery } = usePokemon();
+  const { allPokemon, filteredPokemon, bestMatch, searchQuery, setSearchQuery } = usePokemon();
   const [recentPokemon, setRecentPokemon] = useLocalStorage('recentPokemon', []);
   const [language, setLanguage] = useState('de');
 
@@ -42,7 +42,7 @@ function App() {
       <SearchBar
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
-        filteredPokemon={filteredPokemon}
+        bestMatch={bestMatch}
         onPokemonSelect={handlePokemonClick}
       />
 
@@ -50,6 +50,7 @@ function App() {
         <PokemonList
           allPokemon={allPokemon}
           filteredPokemon={filteredPokemon}
+          bestMatch={bestMatch}
           onPokemonClick={handlePokemonClick}
           language={language}
         />

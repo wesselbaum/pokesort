@@ -108,6 +108,27 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+.pokemon-item-best-match {
+  background: linear-gradient(135deg, #fff9e6 0%, #ffffff 100%);
+  border: 3px solid #ffc107;
+  box-shadow: 0 0 16px rgba(255, 193, 7, 0.5);
+  animation: pulse-highlight 2s ease-in-out infinite;
+}
+
+.pokemon-item-best-match:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 4px 16px rgba(255, 193, 7, 0.6);
+}
+
+@keyframes pulse-highlight {
+  0%, 100% {
+    box-shadow: 0 0 16px rgba(255, 193, 7, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(255, 193, 7, 0.7);
+  }
+}
+
 .pokemon-sprite {
   width: 80px;
   height: 80px;

@@ -1,7 +1,7 @@
-export function SearchBar({ searchQuery, onSearchChange, filteredPokemon, onPokemonSelect }) {
+export function SearchBar({ searchQuery, onSearchChange, bestMatch, onPokemonSelect }) {
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && filteredPokemon.length === 1) {
-      onPokemonSelect(filteredPokemon[0]);
+    if (e.key === 'Enter' && bestMatch) {
+      onPokemonSelect(bestMatch);
       onSearchChange('');
     } else if (e.key === 'Escape') {
       onSearchChange('');

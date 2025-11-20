@@ -6,13 +6,14 @@ export function usePokemon() {
   const deferredSearchQuery = useDeferredValue(searchQuery);
   const allPokemon = useMemo(() => getAllPokemon(), []);
 
-  const filteredPokemon = useMemo(() => {
+  const searchResults = useMemo(() => {
     return searchPokemon(deferredSearchQuery);
   }, [deferredSearchQuery]);
 
   return {
     allPokemon,
-    filteredPokemon,
+    filteredPokemon: searchResults.results,
+    bestMatch: searchResults.bestMatch,
     searchQuery,
     setSearchQuery
   };

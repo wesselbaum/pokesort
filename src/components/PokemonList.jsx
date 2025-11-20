@@ -1,7 +1,7 @@
 import { memo, useMemo } from 'react';
 import { PokemonListItem } from './PokemonListItem';
 
-export const PokemonList = memo(function PokemonList({ allPokemon, filteredPokemon, onPokemonClick, language }) {
+export const PokemonList = memo(function PokemonList({ allPokemon, filteredPokemon, bestMatch, onPokemonClick, language }) {
   const visibleIds = useMemo(() => {
     return new Set(filteredPokemon.map(p => p.id));
   }, [filteredPokemon]);
@@ -23,6 +23,7 @@ export const PokemonList = memo(function PokemonList({ allPokemon, filteredPokem
             onClick={onPokemonClick}
             language={language}
             isVisible={visibleIds.has(poke.id)}
+            isBestMatch={bestMatch && poke.id === bestMatch.id}
           />
         ))}
       </div>
